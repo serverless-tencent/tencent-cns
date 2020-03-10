@@ -34,74 +34,26 @@ $ touch serverless.yml
 ```yml
 # serverless.yml
 
-hello_world:
-  component: '@serverless/tencent-scf-multi-region'
+cnsResolution:
+  component: '@serverless/tencent-cns'
   inputs:
-    codeUri: ./
-    description: This is a template function
-    region: 
-      -ap-guangzhou
-      - ap-shanghai
-    environment:
-      variables:
-        ENV_FIRST: env1
-        ENV_SECOND: env2
-    handler: index.main_handler
-    memorySize: 128
-    name: hello_world
-    runtime: Python3.6
-    timeout: 3
-    events:
-      - apigw:
-          name: serverless_test
-          parameters:
-            protocols:
-              - http
-            description: the serverless service
-            environment: release
-            endpoints:
-              - path: /users
-                method: POST
-              - path: /usersss
-                method: POST
-    ap-guangzhou:
-      environment:
-        variables:
-          ENV_FIRST: env2
-    ap-shanghai:
-      events:
-        - apigw:
-            name: serverless_test
-            parameters:
-              protocols:
-                - http
-              description: the serverless service
-              environment: release
-              endpoints:
-                - path: /usersd
-                  method: POST
+    domain: anycodes.cn
+    records:
+      - subDomain: abc
+        recordType: CNAME
+        recordLine: 默认
+        value: cname.dnspod.com.
+        ttl: 600
+        mx: 10
+        status: enable
+      - subDomain: def
+        recordType: CNAME
+        recordLine: 默认
+        value: cname.dnspod.com.
+        ttl: 600
+        mx: 10
+        status: enable
 
-```
-
-- 该组件配置与`tencent-scf`组件配置一致，针对不同地域的额外拓展，可以增加以地域为`key`的对象，地域对象下的内容也是和`tencent-scf`组件配置一致：
-
-```text
-ap-guangzhou:
-  environment:
-    variables:
-      ENV_FIRST: env2
-ap-shanghai:
-  events:
-    - apigw:
-        name: serverless_test
-        parameters:
-          protocols:
-            - http
-          description: the serverless service
-          environment: release
-          endpoints:
-            - path: /usersd
-              method: POST
 ```
 
 ### 3. 部署
@@ -120,73 +72,60 @@ $ sls --debug
   DEBUG ─ Creating the template's components graph.
   DEBUG ─ Syncing template state.
   DEBUG ─ Executing the template's components graph.
-  DEBUG ─ Starting API-Gateway deployment with name restApi.ap-shanghai-apigateway in the ap-shanghai region
-  DEBUG ─ Using last time deploy service id service-isgiabd1
-  DEBUG ─ Updating service with serviceId service-isgiabd1.
-  DEBUG ─ Endpoint POST /users already exists with id api-cqscrqto.
-  DEBUG ─ Updating api with api id api-cqscrqto.
-  DEBUG ─ Service with id api-cqscrqto updated.
-  DEBUG ─ Deploying service with id service-isgiabd1.
-  DEBUG ─ Deployment successful for the api named restApi.ap-shanghai-apigateway in the ap-shanghai region.
-  DEBUG ─ Endpoint POST /userss already exists with id api-30durwsu.
-  DEBUG ─ Updating api with api id api-30durwsu.
-  DEBUG ─ Service with id api-30durwsu updated.
-  DEBUG ─ Deploying service with id service-isgiabd1.
-  DEBUG ─ Deployment successful for the api named restApi.ap-shanghai-apigateway in the ap-shanghai region.
-  DEBUG ─ Starting API-Gateway deployment with name restApi.ap-guangzhou-apigateway in the ap-guangzhou region
-  DEBUG ─ Using last time deploy service id service-nthsvw02
-  DEBUG ─ Updating service with serviceId service-nthsvw02.
-  DEBUG ─ Endpoint POST /users already exists with id api-n8mumgq6.
-  DEBUG ─ Updating api with api id api-n8mumgq6.
-  DEBUG ─ Service with id api-n8mumgq6 updated.
-  DEBUG ─ Deploying service with id service-nthsvw02.
-  DEBUG ─ Deployment successful for the api named restApi.ap-guangzhou-apigateway in the ap-guangzhou region.
-  DEBUG ─ Endpoint POST /userss already exists with id api-mu1w26sm.
-  DEBUG ─ Updating api with api id api-mu1w26sm.
-  DEBUG ─ Service with id api-mu1w26sm updated.
-  DEBUG ─ Deploying service with id service-nthsvw02.
-  DEBUG ─ Deployment successful for the api named restApi.ap-guangzhou-apigateway in the ap-guangzhou region.
+  DEBUG ─ Getting release domain records ... 
+  DEBUG ─ Get release domain error.
+  DEBUG ─ Adding domain ...
+  DEBUG ─ Added domain
+  DEBUG ─ Doing action about domain records ... 
+  DEBUG ─ Resolving abc - cname.dnspod.com.
+  DEBUG ─ Creating ... 
+  DEBUG ─ Created (recordId is 555093860) 
+  DEBUG ─ Modifying status to enable 
+  DEBUG ─ Modified status to enable 
+  DEBUG ─ Resolving def - cname.dnspod.com.
+  DEBUG ─ Creating ... 
+  DEBUG ─ Created (recordId is 555093864) 
+  DEBUG ─ Modifying status to enable 
+  DEBUG ─ Modified status to enable 
 
-  restApi: 
-    ap-shanghai: 
-      serviceId:   service-isgiabd1
-      subDomain:   service-isgiabd1-1256773370.sh.apigw.tencentcs.com
-      environment: release
-      protocols: 
-        - https
-      apis: 
-        - Method: POST	 PATH: /users
-        - Method: POST	 PATH: /userss
-    ap-guangzhou: 
-      serviceId:   service-nthsvw02
-      subDomain:   service-nthsvw02-1256773370.gz.apigw.tencentcs.com
-      environment: release
-      protocols: 
-        - https
-      apis: 
-        - Method: POST	 PATH: /users
-        - Method: POST	 PATH: /userss
+  cnsResolution: 
+    domain:  anycodes.cn
+    records: 
+      - 
+        subDomain:  abc
+        recordType: CNAME
+        recordLine: 默认
+        value:      cname.dnspod.com.
+        status:     enable
+      - 
+        subDomain:  def
+        recordType: CNAME
+        recordLine: 默认
+        value:      cname.dnspod.com.
+        status:     enable
+    DNS:     Please set your domain DNS: f1g1ns1.dnspod.net | f1g1ns1.dnspod.net
 
-  13s › restApi › done
+  6s › cnsResolution › done
+
+
 ```
 
 ### 4. 移除
 
-通过以下命令移除部署的存储桶
+通过以下命令移除
 
 ```
 $ sls remove --debug
 
   DEBUG ─ Flushing template state and removing all components.
-  DEBUG ─ Removing any previously deployed API. api-cqscrqto
-  DEBUG ─ Removing any previously deployed API. api-30durwsu
-  DEBUG ─ Removing any previously deployed service. service-isgiabd1
-  DEBUG ─ Removing any previously deployed API. api-n8mumgq6
-  DEBUG ─ Removing any previously deployed API. api-mu1w26sm
-  DEBUG ─ Removing any previously deployed service. service-nthsvw02
+  DEBUG ─ Removing ...
+  DEBUG ─ Removing record abc 555093860 
+  DEBUG ─ Removed record abc 555093860 
+  DEBUG ─ Removing record def 555093864 
+  DEBUG ─ Removed record def 555093864 
+  DEBUG ─ Removed ...
 
-  17s › restApi › done
-
+  4s › cnsResolution › done
 
 ```
 

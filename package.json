@@ -15,7 +15,7 @@
   "dependencies": {
     "@serverless/core": "^1.0.0",
     "qcloudapi-sdk": "^0.2.1",
-    "serverless-tencent-auth-tool": "^2.0.0"
+    "serverless-tencent-auth-tool": "^2.0.1"
   },
   "devDependencies": {
     "babel-eslint": "9.0.0",

@@ -71,7 +71,7 @@ class TencentSCFMultiRegion extends Component {
     // login
     const auth = new tencentAuth()
     this.context.credentials.tencent = await auth.doAuth(this.context.credentials.tencent, {
-      client: 'tencent-apigateway',
+      client: 'tencent-cns',
       remark: inputs.fromClientRemark,
       project: this.context.instance ? this.context.instance.id : undefined,
       action: 'default'
@@ -218,7 +218,7 @@ class TencentSCFMultiRegion extends Component {
     // login
     const auth = new tencentAuth()
     this.context.credentials.tencent = await auth.doAuth(this.context.credentials.tencent, {
-      client: 'tencent-apigateway',
+      client: 'tencent-cns',
       remark: inputs.fromClientRemark,
       project: this.context.instance ? this.context.instance.id : undefined,
       action: 'default'

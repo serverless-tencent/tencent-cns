@@ -135,10 +135,31 @@ class TencentSCFMultiRegion extends Component {
       }
     }
 
+    const records = []
+    for (let recordNum = 0; recordNum < inputs.records.length; recordNum++) {
+      const tempSubDomain =
+        typeof inputs.records[recordNum].subDomain == 'string'
+          ? [inputs.records[recordNum].subDomain]
+          : inputs.records[recordNum].subDomain
+      const tempRecordLine =
+        typeof inputs.records[recordNum].recordLine == 'string'
+          ? [inputs.records[recordNum].recordLine]
+          : inputs.records[recordNum].recordLine
+
+      for (let subDomainNum = 0; subDomainNum < tempSubDomain.length; subDomainNum++) {
+        for (let recordLineNum = 0; recordLineNum < tempRecordLine.length; recordLineNum++) {
+          const tempRecord = JSON.parse(JSON.stringify(inputs.records[recordNum]))
+          tempRecord.subDomain = tempSubDomain[subDomainNum]
+          tempRecord.recordLine = tempRecordLine[recordLineNum]
+          records.push(tempRecord)
+        }
+      }
+    }
+
     // 增加/修改记录
     this.context.debug(`Doing action about domain records ... `)
-    for (let recordNum = 0; recordNum < inputs.records.length; recordNum++) {
-      const tempInputs = JSON.parse(JSON.stringify(inputs.records[recordNum]))
+    for (let recordNum = 0; recordNum < records.length; recordNum++) {
+      const tempInputs = JSON.parse(JSON.stringify(records[recordNum]))
       tempInputs.domain = inputs.domain
       if (!tempInputs.status) {
         tempInputs.status = 'enable' // 设置默认值

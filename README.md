@@ -39,9 +39,13 @@ cnsResolution:
   inputs:
     domain: anycodes.cn
     records:
-      - subDomain: abc
+      - subDomain:
+          - abc
+          - cde
         recordType: CNAME
-        recordLine: 默认
+        recordLine:
+          - 移动
+          - 电信
         value: cname.dnspod.com.
         ttl: 600
         mx: 10
@@ -89,12 +93,30 @@ $ sls --debug
   DEBUG ─ Modified status to enable 
 
   cnsResolution: 
-    domain:  anycodes.cn
+    domain:  anycodessss.cn
     records: 
       - 
         subDomain:  abc
         recordType: CNAME
-        recordLine: 默认
+        recordLine: 移动
+        value:      cname.dnspod.com.
+        status:     enable
+      - 
+        subDomain:  abc
+        recordType: CNAME
+        recordLine: 电信
+        value:      cname.dnspod.com.
+        status:     enable
+      - 
+        subDomain:  cde
+        recordType: CNAME
+        recordLine: 移动
+        value:      cname.dnspod.com.
+        status:     enable
+      - 
+        subDomain:  cde
+        recordType: CNAME
+        recordLine: 电信
         value:      cname.dnspod.com.
         status:     enable
       - 
@@ -119,13 +141,20 @@ $ sls remove --debug
 
   DEBUG ─ Flushing template state and removing all components.
   DEBUG ─ Removing ...
-  DEBUG ─ Removing record abc 555093860 
-  DEBUG ─ Removed record abc 555093860 
-  DEBUG ─ Removing record def 555093864 
-  DEBUG ─ Removed record def 555093864 
+  DEBUG ─ Removing record abc 555673797 
+  DEBUG ─ Removed record abc 555673797 
+  DEBUG ─ Removing record abc 555673809 
+  DEBUG ─ Removed record abc 555673809 
+  DEBUG ─ Removing record cde 555673833 
+  DEBUG ─ Removed record cde 555673833 
+  DEBUG ─ Removing record cde 555673845 
+  DEBUG ─ Removed record cde 555673845 
+  DEBUG ─ Removing record def 555673860 
+  DEBUG ─ Removed record def 555673860 
   DEBUG ─ Removed ...
 
-  4s › cnsResolution › done
+  5s › cnsResolution › done
+
 
 ```
 

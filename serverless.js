@@ -103,17 +103,19 @@ class TencentSCFMultiRegion extends Component {
           domain: inputs.domain
         }
         const recordReleaseList = await this.doAction(apig, 'RecordList', statusInputs)
-        if (recordReleaseList.codeDesc == 'Success') {
-          for (let i = 0; i < recordReleaseList['data']['records'].length; i++) {
+        if (recordReleaseList['records']) {
+          for (let i = 0; i < recordReleaseList['records'].length; i++) {
             recordRelease.push({
               domain: inputs.domain,
-              subDomain: recordReleaseList['data']['records'][i].name,
-              recordType: recordReleaseList['data']['records'][i].type,
-              value: recordReleaseList['data']['records'][i].value,
-              recordId: recordReleaseList['data']['records'][i].id
+              subDomain: recordReleaseList['records'][i].name,
+              recordType: recordReleaseList['records'][i].type,
+              value: recordReleaseList['records'][i].value,
+              recordId: recordReleaseList['records'][i].id,
+              mx: recordReleaseList['records'][i].mx,
+              ttl: recordReleaseList['records'][i].ttl
             })
           }
-          domainLength = recordReleaseList['data']['records'].length
+          domainLength = recordReleaseList['records'].length
         } else {
           domainLength = 0
         }

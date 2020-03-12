@@ -37,7 +37,8 @@ class TencentSCFMultiRegion extends Component {
         newRecord.domain == historyRcords[i].domain &&
         newRecord.subDomain == historyRcords[i].subDomain &&
         newRecord.recordType == historyRcords[i].recordType &&
-        newRecord.value == historyRcords[i].value
+        newRecord.value == historyRcords[i].value &&
+        newRecord.recordLine == historyRcords[i].recordLine
       ) {
         return historyRcords[i]
       }
@@ -54,7 +55,8 @@ class TencentSCFMultiRegion extends Component {
           newRecords[j].domain == historyRcords[i].domain &&
           newRecords[j].subDomain == historyRcords[i].subDomain &&
           newRecords[j].recordType == historyRcords[i].recordType &&
-          newRecords[j].value == historyRcords[i].value
+          newRecords[j].value == historyRcords[i].value &&
+          newRecords[j].recordLine == historyRcords[i].recordLine
         ) {
           temp = true
           break
@@ -162,6 +164,7 @@ class TencentSCFMultiRegion extends Component {
     this.context.debug(`Doing action about domain records ... `)
     for (let recordNum = 0; recordNum < records.length; recordNum++) {
       const tempInputs = JSON.parse(JSON.stringify(records[recordNum]))
+      console.log(tempInputs)
       tempInputs.domain = inputs.domain
       if (!tempInputs.status) {
         tempInputs.status = 'enable' // 设置默认值
@@ -176,6 +179,8 @@ class TencentSCFMultiRegion extends Component {
         if (!tempInputs.recordId) {
           tempInputs.recordId = tempHistory.recordId ? tempHistory.recordId : releseHistory.recordId
         }
+        console.log(tempInputs.recordId)
+        tempInputs.recordId = Number(tempInputs.recordId)
         this.context.debug(`Modifying (recordId is ${tempInputs.recordId})... `)
         await this.doAction(apig, 'RecordModify', tempInputs)
         this.context.debug(`Modified (recordId is ${tempInputs.recordId}) `)

@@ -164,7 +164,6 @@ class TencentSCFMultiRegion extends Component {
     this.context.debug(`Doing action about domain records ... `)
     for (let recordNum = 0; recordNum < records.length; recordNum++) {
       const tempInputs = JSON.parse(JSON.stringify(records[recordNum]))
-      console.log(tempInputs)
       tempInputs.domain = inputs.domain
       if (!tempInputs.status) {
         tempInputs.status = 'enable' // 设置默认值
@@ -179,7 +178,6 @@ class TencentSCFMultiRegion extends Component {
         if (!tempInputs.recordId) {
           tempInputs.recordId = tempHistory.recordId ? tempHistory.recordId : releseHistory.recordId
         }
-        console.log(tempInputs.recordId)
         tempInputs.recordId = Number(tempInputs.recordId)
         this.context.debug(`Modifying (recordId is ${tempInputs.recordId})... `)
         await this.doAction(apig, 'RecordModify', tempInputs)
